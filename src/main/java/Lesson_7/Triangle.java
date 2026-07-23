@@ -33,7 +33,7 @@ public class Triangle {
 
     public static void main(String[] args) {
         try {
-            System.out.println(area(3, 4, 6, 30));
+            System.out.println(area(4, 10, 2, 3));
         }
             catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
