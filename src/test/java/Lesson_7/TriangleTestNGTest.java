@@ -85,6 +85,39 @@ public class TriangleTestNGTest {
 
 
 
+    @DataProvider (name = "type2InvalidData")
+    public Object[][] type2InvalidData () {
+        return new Object[][] {
+                {10, 65, 138},
+                {31, 160, 30}
+        };
+    }
 
+    @Test (dataProvider = "type2InvalidData",
+            expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = "Такой треугольник не существует.",
+            description = "По 1 стороне и 2 углам, исключение на несуществующий треугольник")
+    public void area_by1SideAnd2Angles_shouldThrowException (double a, double b, double c) {
+        area(2, a, b, c);
+    }
+
+
+
+    @DataProvider (name = "type4InvalidData")
+    public Object[][] type4InvalidData () {
+        return new Object[][] {
+                {10, 5, 5},
+                {3, 6, 3},
+                {11, 1, 2}
+        };
+    }
+
+    @Test (dataProvider = "type4InvalidData",
+            expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = "Такой треугольник не существует.",
+            description = "По 3 сторонам, исключение на несуществующий треугольник")
+    public void area_by3Sides_shouldThrowException (double a, double b, double c) {
+        area(4, a, b, c);
+    }
 
 }
