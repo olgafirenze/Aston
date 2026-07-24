@@ -47,6 +47,44 @@ public class TriangleTestNGTest {
 
 
 
+    @DataProvider (name = "type234Data")
+    public Object[][] type234Data() {
+        return new Object[][] {
+                {2, 5, 30, 60, 5.4126},
+                {2, 10, 45, 45, 25},
+                {3, 4, 6, 30, 6},
+                {4, 13, 14, 15, 84.0}
+        };
+    }
+
+    @Test (dataProvider = "type234Data", description = "По 3 параметрам(1 сторона и 2 угла, " +
+            "2 стороны и 1 угол, 3 стороны), корректные значения")
+    public void area_by3params_shouldReturnCorrectResult (int type, double a, double b, double c,
+                                                          double expected) {
+        area(type, a, b, c);
+    }
+
+
+
+    @DataProvider (name = "type234InvalidType")
+    public Object[][] type234InvalidType() {
+        return new Object[][] {
+            {1, 5, 30, 60},
+            {7, 13, 14, 15}
+        };
+    }
+
+    @Test (dataProvider = "type234InvalidType",
+            expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = "Неверный тип треугольника.",
+            description = "По 3 параметрам(1 сторона и 2 угла, " +
+            "2 стороны и 1 угол, 3 стороны), исключение при неверном выборе типа треугольника")
+    public void area_by3params_shouldThrowException_forInvalidType (int type, double a, double b, double c) {
+        area(type, a, b, c);
+    }
+
+
+
 
 
 }
