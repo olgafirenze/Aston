@@ -74,7 +74,7 @@ class TriangleJUnit5Test {
     @DisplayName("По 1 стороне и 2 углам, исключение на несуществующий треугольник")
     void area_by1side2angles_shouldThrowException (double a, double b, double c) {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                area(4, a, b, c));
+                area(2, a, b, c));
         assertEquals("Такой треугольник не существует.", exception.getMessage());
     }
 
