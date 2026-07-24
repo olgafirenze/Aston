@@ -3,7 +3,7 @@ package Lesson_7;
 public class Calculation {
     private int a,b;
     private String sign;
-    public static int calculation(int a, String sign, int b) throws ArithmeticException {
+    public static int calculation(int a, String sign, int b) throws ArithmeticException, IllegalArgumentException {
         return switch (sign) {
             case "+" -> a + b;
             case "-" -> a - b;
@@ -13,7 +13,7 @@ public class Calculation {
                 yield a / b;
             }
             default -> {
-                throw new ArithmeticException("Вы ввели некорректный знак.");
+                throw new IllegalArgumentException("Вы ввели некорректный знак.");
             }
         };
     }
