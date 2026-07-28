@@ -131,4 +131,141 @@ public class ApiEchoTests {
     }
 
 
+    @Test
+    void testPutRequest() {
+        String textBody = "This is expected to be sent back as part of response body.";
+        Response response = given()
+                .header("cache-control", "no-cache")
+                .header("Content-Type", "text/plain")
+                .body(textBody)
+                .when()
+                .put("/put")
+                .then()
+                .extract().response();
+
+        assertEquals(200, response.getStatusCode());
+
+        Map<String, Object> jsonResponse = response.jsonPath().getMap("$");
+        assertThat(jsonResponse)
+                .containsKeys("args", "headers", "data", "files", "form", "json", "url");
+
+        String data = response.jsonPath().getString("data");
+        assertThat(data).isEqualTo("This is expected to be sent back as part of response body.");
+
+        Object json = response.jsonPath().get("json");
+        assertThat(json).isNull();
+
+        Map<String, Object> form = response.jsonPath().getMap("form");
+        assertThat(form).isEmpty();
+
+        Map<String, Object> files = response.jsonPath().getMap("files");
+        assertThat(files).isEmpty();
+
+        String url = response.jsonPath().getString("url");
+        assertThat(url).isEqualTo("https://postman-echo.com/put");
+
+        Map<String, String> headers = response.jsonPath().getMap("headers");
+        assertThat(headers)
+                .containsKeys("host", "x-forwarded-proto", "user-agent", "accept", "accept-encoding", "cache-control", "content-type");
+        assertThat(headers)
+                .containsEntry("host", "postman-echo.com")
+                .containsEntry("x-forwarded-proto", "https")
+                .containsEntry("accept", "*/*")
+                .containsEntry("accept-encoding", "gzip, br")
+                .containsEntry("cache-control", "no-cache")
+                .containsEntry("content-type", "text/plain; charset=ISO-8859-1");
+    }
+
+
+    @Test
+    void testPatchRequest() {
+        String textBody = "This is expected to be sent back as part of response body.";
+        Response response = given()
+                .header("cache-control", "no-cache")
+                .header("Content-Type", "text/plain")
+                .body(textBody)
+                .when()
+                .patch("/patch")
+                .then()
+                .extract().response();
+
+        assertEquals(200, response.getStatusCode());
+
+        Map<String, Object> jsonResponse = response.jsonPath().getMap("$");
+        assertThat(jsonResponse)
+                .containsKeys("args", "headers", "data", "files", "form", "json", "url");
+
+        String data = response.jsonPath().getString("data");
+        assertThat(data).isEqualTo("This is expected to be sent back as part of response body.");
+
+        Object json = response.jsonPath().get("json");
+        assertThat(json).isNull();
+
+        Map<String, Object> form = response.jsonPath().getMap("form");
+        assertThat(form).isEmpty();
+
+        Map<String, Object> files = response.jsonPath().getMap("files");
+        assertThat(files).isEmpty();
+
+        String url = response.jsonPath().getString("url");
+        assertThat(url).isEqualTo("https://postman-echo.com/patch");
+
+        Map<String, String> headers = response.jsonPath().getMap("headers");
+        assertThat(headers)
+                .containsKeys("host", "x-forwarded-proto", "user-agent", "accept", "accept-encoding", "cache-control", "content-type");
+        assertThat(headers)
+                .containsEntry("host", "postman-echo.com")
+                .containsEntry("x-forwarded-proto", "https")
+                .containsEntry("accept", "*/*")
+                .containsEntry("accept-encoding", "gzip, br")
+                .containsEntry("cache-control", "no-cache")
+                .containsEntry("content-type", "text/plain; charset=ISO-8859-1");
+    }
+
+
+    @Test
+    void testDeleteRequest() {
+        String textBody = "This is expected to be sent back as part of response body.";
+        Response response = given()
+                .header("cache-control", "no-cache")
+                .header("Content-Type", "text/plain")
+                .body(textBody)
+                .when()
+                .delete("/delete")
+                .then()
+                .extract().response();
+
+        assertEquals(200, response.getStatusCode());
+
+        Map<String, Object> jsonResponse = response.jsonPath().getMap("$");
+        assertThat(jsonResponse)
+                .containsKeys("args", "headers", "data", "files", "form", "json", "url");
+
+        String data = response.jsonPath().getString("data");
+        assertThat(data).isEqualTo("This is expected to be sent back as part of response body.");
+
+        Object json = response.jsonPath().get("json");
+        assertThat(json).isNull();
+
+        Map<String, Object> form = response.jsonPath().getMap("form");
+        assertThat(form).isEmpty();
+
+        Map<String, Object> files = response.jsonPath().getMap("files");
+        assertThat(files).isEmpty();
+
+        String url = response.jsonPath().getString("url");
+        assertThat(url).isEqualTo("https://postman-echo.com/delete");
+
+        Map<String, String> headers = response.jsonPath().getMap("headers");
+        assertThat(headers)
+                .containsKeys("host", "x-forwarded-proto", "user-agent", "accept", "accept-encoding", "cache-control", "content-type");
+        assertThat(headers)
+                .containsEntry("host", "postman-echo.com")
+                .containsEntry("x-forwarded-proto", "https")
+                .containsEntry("accept", "*/*")
+                .containsEntry("accept-encoding", "gzip, br")
+                .containsEntry("cache-control", "no-cache")
+                .containsEntry("content-type", "text/plain; charset=ISO-8859-1");
+    }
+
 }
