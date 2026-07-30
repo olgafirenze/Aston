@@ -1,4 +1,4 @@
-package Lesson_9;
+package Lesson_10;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
