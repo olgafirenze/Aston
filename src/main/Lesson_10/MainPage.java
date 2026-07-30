@@ -184,12 +184,12 @@ public class MainPage extends BasePage {
         return continueButton.getText();
     }
 
-    /*public PaymentPopupPage clickContinueButton() {
+    public PaymentPopupPage clickContinueButton() {
         waitForElementToBeClickable(continueButton);
         scrollToElement(continueButton);
         clickWithJS(continueButton);
         return new PaymentPopupPage(driver);
-    }*/
+    }
 
 }
 
