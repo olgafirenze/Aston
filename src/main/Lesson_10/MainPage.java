@@ -1,17 +1,12 @@
 package main.Lesson_10;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import main.Lesson_10.BasePage;
 
 public class MainPage extends BasePage {
 
@@ -21,17 +16,11 @@ public class MainPage extends BasePage {
     @FindBy(xpath = "//section[@class='pay']//h2")
     private WebElement title;
 
-    @FindBy(xpath = "//div[@class='pay__partners']")
-    private WebElement partnersContainer;
-
     @FindBy(xpath = "//div[@class='pay__partners']//img")
     private List<WebElement> logos;
 
     @FindBy(xpath = "//a[contains(text(),'Подробнее о сервисе')]")
     private WebElement link;
-
-    @FindBy(xpath = ".//div[@class='pay__form']")
-    private WebElement paymentForm;
 
     @FindBy(xpath = ".//input[@placeholder='Номер телефона']")
     private WebElement phoneField;
@@ -47,21 +36,10 @@ public class MainPage extends BasePage {
 
     @FindBy(xpath = ".//select[contains(@id, 'pay')]")
     private WebElement serviceSelect;
-    Select select = new Select(serviceSelect);
 
-    private String serviceName;
 
     public MainPage(WebDriver driver) {
         super(driver);
-    }
-
-    public List<String> getAllServiceOptions() {
-        List<WebElement> options = select.getOptions();
-        List<String> optionsText = new ArrayList<>();
-        for (WebElement option : options) {
-            optionsText.add(option.getText().trim());
-        }
-        return optionsText;
     }
 
 
@@ -69,22 +47,13 @@ public class MainPage extends BasePage {
         return By.xpath(".//input[@placeholder='" + placeholder + "']");
     }
 
-    public MainPage selectServiceBySelect(String serviceName) {
-        select.selectByVisibleText(serviceName);
+    public MainPage selectServiceByValue(String serviceName) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].style.display = 'block';", serviceSelect);
+        Select select = new Select(serviceSelect);
+        select.selectByValue(serviceName);
         return this;
     }
-
-    public MainPage selectServiceByClick(String serviceName) {
-        List<WebElement> options = select.getOptions();
-        for (WebElement option : options) {
-            if (option.getText().trim().equals(serviceName)) {
-                option.click();
-                break;
-            }
-        }
-        return this;
-    }
-
 
     public MainPage open() {
         driver.get("https://www.mts.by");
@@ -126,15 +95,7 @@ public class MainPage extends BasePage {
         return link.isDisplayed() && link.isEnabled();
     }
 
-    public String getServiceOption(String serviceName) {
-        List<WebElement> options = select.getOptions();
-        for (WebElement option : options) {
-            if (option.getText().trim().equals(serviceName)) {
-                return option.getText().trim();
-            }
-        }
-        throw new NoSuchElementException("Опция '" + serviceName + "' не найдена в select");
-    }
+
 
     public String getFieldPlaceholder(String placeholder) {
         WebElement field = driver.findElement(getInputPlaceholderLocator(placeholder));
@@ -164,25 +125,6 @@ public class MainPage extends BasePage {
         return this;
     }
 
-    public String getPhoneFieldValue() {
-        return phoneField.getAttribute("value");
-    }
-
-    public String getAmountFieldValue() {
-        return amountField.getAttribute("value");
-    }
-
-    public String getEmailFieldValue() {
-        return emailField.getAttribute("value");
-    }
-
-    public boolean isContinueButtonEnabled() {
-        return continueButton.isEnabled();
-    }
-
-    public String getContinueButtonText() {
-        return continueButton.getText();
-    }
 
     public PaymentPopupPage clickContinueButton() {
         waitForElementToBeClickable(continueButton);

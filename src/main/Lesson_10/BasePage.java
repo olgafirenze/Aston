@@ -4,6 +4,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
@@ -27,4 +28,13 @@ public class BasePage {
                 e.printStackTrace();
             }
         }
+
+        protected void clickWithJS(WebElement element) {
+            js.executeScript("arguments[0].click();", element);
+        }
+
+        protected void waitForElementToBeClickable(WebElement element) {
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+        }
+
 }

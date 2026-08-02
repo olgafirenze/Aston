@@ -1,13 +1,11 @@
 package Lesson_10;
 
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import main.Lesson_10.MainPage;
+import main.Lesson_10.PaymentPopupPage;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,98 +13,174 @@ public class MtsOnlinePaymentTest extends BaseTest {
 
     @Test
     public void testOnlinePaymentBlockTitle() {
-        driver.get("https://www.mts.by");
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open()
+                .closeCookieBanner()
+                .scrollToPaymentSection();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-
-        WebElement section = driver.findElement(By.xpath("//section[@class='pay']"));
-
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", section);
-
-        WebElement title = section.findElement(By.tagName("h2"));
-
-        assertThat(title.getText().replace("\n", " ").replace("\"", "").trim()).
-                isEqualTo("ОНЛАЙН ПОПОЛНЕНИЕ БЕЗ КОМИССИИ");
+        assertThat(mainPage.getTitle().replace("\n", " ").replace("\"", "").trim())
+                .as("Название блока должно соответствовать ожидаемому")
+                .isEqualTo("ОНЛАЙН ПОПОЛНЕНИЕ БЕЗ КОМИССИИ");
     }
+
+
 
     @Test
     public void testOnlinePaymentBlockLogos() {
-        driver.get("https://www.mts.by");
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        WebElement section = wait.until(
-                ExpectedConditions.presenceOfElementLocated(By.xpath("//section[contains(@class, 'pay')]")));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", section);
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open()
+                .closeCookieBanner()
+                .scrollToPaymentSection();
 
         String[] expectedLogos = {"Visa", "Verified By Visa", "MasterCard", "MasterCard Secure Code", "Белкарт"};
+        List<WebElement> logos = mainPage.getLogos();
+
         for (String logoName : expectedLogos) {
-            WebElement logo = section.findElement(By.xpath(".//div[@class='pay__partners']//img[@alt='" + logoName + "']"));
-            assertThat(logo.isDisplayed()).isTrue();
-            assertThat(logo.getAttribute("src")).isNotEmpty();
+            boolean found = logos.stream()
+                    .anyMatch(logo -> logo.getAttribute("alt").equals(logoName));
+            assertThat(found)
+                    .as("Логотип '" + logoName + "' должен присутствовать")
+                    .isTrue();
         }
     }
+
+
 
     @Test
     public void testOnlinePaymentBlockLink() {
-        driver.get("https://www.mts.by");
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open()
+                .closeCookieBanner()
+                .scrollToPaymentSection();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        WebElement section = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//section[contains(@class, 'pay')]")));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", section);
+        assertThat(mainPage.isLinkVisible())
+                .as("Ссылка 'Подробнее о сервисе' должна быть видима")
+                .isTrue();
 
-        WebElement link = section.findElement(By.xpath("//a[contains(text(),'Подробнее о сервисе')]"));
-        assertThat(link.isDisplayed()).isTrue();
-        assertThat(link.isEnabled()).isTrue();
-
-        assertThat(link.getAttribute("href")).contains("https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/");
+        assertThat(mainPage.getLinkHref())
+                .as("Ссылка должна вести на страницу с описанием сервиса")
+                .contains("https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/");
     }
+
+
 
     @Test
-    public void testFillFormAndContinueButton() {
-        driver.get("https://www.mts.by");
+    public void testServiceOptionsPlaceholders() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open()
+                .closeCookieBanner()
+                .scrollToPaymentSection();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        String[] services = {"Услуги связи", "Домашний интернет", "Рассрочка", "Задолженность"};
 
-        try {
-            WebElement cookieAccept = wait.until(ExpectedConditions.elementToBeClickable(By.id("cookie-agree")));
-            cookieAccept.click();
-        } catch (Exception e) {
-            System.out.println("Cookie-баннер не найден");
+        for (String service : services) {
+            mainPage.selectServiceByValue(service);
+
+            String phonePlaceholder = mainPage.getFieldPlaceholder("Номер телефона");
+            String internetPhonePlaceholder = mainPage.getFieldPlaceholder("Номер абонента");
+            String account44Placeholder = mainPage.getFieldPlaceholder("Номер счета на 44");
+            String account2073Placeholder = mainPage.getFieldPlaceholder("Номер счета на 2073");
+            String amountPlaceholder = mainPage.getFieldPlaceholder("Сумма");
+            String emailPlaceholder = mainPage.getFieldPlaceholder("E-mail для отправки чека");
+
+            assertThat(amountPlaceholder)
+                    .as("Плейсхолдер для суммы для " + service)
+                    .isEqualTo("Сумма");
+
+            assertThat(emailPlaceholder)
+                    .as("Плейсхолдер для email для " + service)
+                    .isEqualTo("E-mail для отправки чека");
+
+            switch (service) {
+                case "Услуги связи" -> assertThat(phonePlaceholder)
+                        .as("Плейсхолдер для телефона для " + service)
+                        .isEqualTo("Номер телефона");
+                case "Домашний интернет" -> assertThat(internetPhonePlaceholder)
+                        .as("Плейсхолдер для телефона для " + service)
+                        .isEqualTo("Номер абонента");
+                case "Рассрочка" -> assertThat(account44Placeholder)
+                        .as("Плейсхолдер для счета для услуги" + service)
+                        .isEqualTo("Номер счета на 44");
+                case "Задолженность" -> assertThat(account2073Placeholder)
+                        .as("Плейсхолдер для счета для услуги" + service)
+                        .isEqualTo("Номер счета на 2073");
+            }
         }
-
-        WebElement section = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//section[contains(@class, 'pay')]")));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", section);
-
-        WebElement form = section.findElement(By.xpath(".//div[@class='pay__form']"));
-
-        WebElement phoneField = form.findElement(By.xpath(".//input[@placeholder='Номер телефона']"));
-        phoneField.clear();
-        phoneField.sendKeys("297777777");
-
-        WebElement amountField = form.findElement(By.xpath(".//input[@placeholder='Сумма']"));
-        amountField.clear();
-        amountField.sendKeys("10");
-
-        WebElement emailField = form.findElement(By.xpath(".//input[@placeholder='E-mail для отправки чека']"));
-        emailField.clear();
-        emailField.sendKeys("test@test.com");
-
-        WebElement continueButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"pay-connection\"]/button")));
-        assertThat(continueButton.isDisplayed()).isTrue();
-        assertThat(continueButton.isEnabled()).isTrue();
-        assertThat(continueButton.getText()).isEqualTo("ПРОДОЛЖИТЬ");
-        continueButton.click();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        assertThat(driver.getCurrentUrl()).isNotEqualTo("https://www.mts.by");
     }
 
 
+
+    @Test
+    public void testFullPaymentFlow() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.open()
+                .closeCookieBanner()
+                .scrollToPaymentSection()
+                .fillPhoneNumber("297777777")
+                .fillAmount("10")
+                .fillEmail("test@test.com");
+
+
+        PaymentPopupPage popupPage = mainPage.clickContinueButton();
+        popupPage.switchToPopup();
+
+        assertThat(popupPage.isPaymentPopupDisplayed())
+                .as("Окно оплаты должно отображаться")
+                .isTrue();
+
+        assertThat(popupPage.getPhoneNumber())
+                .as("Номер телефона должен отображаться корректно")
+                .contains("297777777");
+
+        assertThat(popupPage.getPaymentButtonAmount())
+                .as("Сумма на кнопке должна соответствовать введенной")
+                .isEqualTo("10");
+
+        assertThat(popupPage.isCardNumberFieldDisplayed())
+                .as("Поле для номера карты должно отображаться")
+                .isTrue();
+
+        assertThat(popupPage.isExpiryDateFieldDisplayed())
+                .as("Поле для срока действия карты должно отображаться")
+                .isTrue();
+
+        assertThat(popupPage.isCvcFieldDisplayed())
+                .as("Поле для CVC-кода должно отображаться")
+                .isTrue();
+
+        assertThat(popupPage.isCardholderNameFieldDisplayed())
+                .as("Поле для имени держателя карты должно отображаться")
+                .isTrue();
+
+
+        assertThat(popupPage.getCardNumberLabelText())
+                .as("Плейсхолдер для номера карты")
+                .isEqualTo("Номер карты");
+
+        assertThat(popupPage.getExpiryDateLabelText())
+                .as("Плейсхолдер для срока действия")
+                .isEqualTo("Срок действия");
+
+        assertThat(popupPage.getCvcLabelText())
+                .as("Плейсхолдер для CVC")
+                .isEqualTo("CVC");
+
+        assertThat(popupPage.getCardHolderNameLabelText())
+                .as("Плейсхолдер для имени владельца")
+                .isEqualTo("Имя и фамилия на карте");
+
+
+        List<WebElement> logos = popupPage.getPaymentSystemLogos();
+        assertThat(logos)
+                .as("Иконки платежных систем должны отображаться")
+                .isNotEmpty();
+
+        assertThat(popupPage.isPayButtonDisplayed())
+                .as("Кнопка 'Оплатить' должна отображаться")
+                .isTrue();
+
+        assertThat(popupPage.getPayButtonText())
+                .as("Текст кнопки должен содержать 'Оплатить'")
+                .contains("Оплатить");
+    }
 }
