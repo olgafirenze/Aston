@@ -183,4 +183,5 @@ public class MtsOnlinePaymentTest extends BaseTest {
                 .as("Текст кнопки должен содержать 'Оплатить'")
                 .contains("Оплатить");
     }
+
 }
