@@ -1,3 +1,8 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","3579","Проверка названия блока","","2026-08-03","passed","2026-08-03","","Lesson_10.MtsOnlinePaymentTest","Lesson_10.MtsOnlinePaymentTest","testOnlinePaymentBlockTitle"
 "","20","testAllure()","","2026-08-03","passed","2026-08-03","","Lesson_10.SimpleAllureTest","Lesson_10.SimpleAllureTest","testAllure"
 "","1040","testWithSimpleStep()","","2026-08-03","passed","2026-08-03","","Lesson_10.MtsOnlinePaymentTest","Lesson_10.MtsOnlinePaymentTest","testWithSimpleStep"
+"","20153","Проверка процесса перехода к оплате","","2026-08-03","passed","2026-08-03","","Lesson_10.MtsOnlinePaymentTest","Lesson_10.MtsOnlinePaymentTest","testFullPaymentFlow"
+"","3783","Проверка логотипов платежных систем","","2026-08-03","passed","2026-08-03","","Lesson_10.MtsOnlinePaymentTest","Lesson_10.MtsOnlinePaymentTest","testOnlinePaymentBlockLogos"
+"","3537","Проверка работы ссылки","","2026-08-03","passed","2026-08-03","","Lesson_10.MtsOnlinePaymentTest","Lesson_10.MtsOnlinePaymentTest","testOnlinePaymentBlockLink"
+"","4055","Проверка плейсхолдеров","","2026-08-03","passed","2026-08-03","","Lesson_10.MtsOnlinePaymentTest","Lesson_10.MtsOnlinePaymentTest","testServiceOptionsPlaceholders"

@@ -1,4 +1,4 @@
-package main.Lesson_10;
+package Lesson_10;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
