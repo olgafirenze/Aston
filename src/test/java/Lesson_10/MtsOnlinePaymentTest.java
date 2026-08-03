@@ -1,9 +1,15 @@
 package Lesson_10;
 
+import io.qameta.allure.Severity;
+import io.qameta.allure.Step;
+import jdk.jfr.Description;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import main.Lesson_10.MainPage;
 import main.Lesson_10.PaymentPopupPage;
 import org.openqa.selenium.WebElement;
+import io.qameta.allure.SeverityLevel;
 
 import java.util.List;
 
@@ -12,8 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MtsOnlinePaymentTest extends BaseTest {
 
     @Test
+    @DisplayName("Проверка незвания блока")
+    @Description("Проверяет, что отображается название \"ОНЛАЙН ПОПОЛНЕНИЕ БЕЗ КОМИССИИ\"")
+    @Severity(SeverityLevel.MINOR)
     public void testOnlinePaymentBlockTitle() {
+        @Step("Запустить браузер")
         MainPage mainPage = new MainPage(driver);
+        @Step("Открыть главную страницу, принять куки, скролл до секции оплаты")
         mainPage.open()
                 .closeCookieBanner()
                 .scrollToPaymentSection();
@@ -26,6 +37,10 @@ public class MtsOnlinePaymentTest extends BaseTest {
 
 
     @Test
+    @DisplayName("Проверка логотипов платежных систем")
+    @Description("Проверяет, что отображаются логотипы Visa, Verified By Visa, MasterCard, " +
+            "MasterCard Secure Code, Белкарт")
+    @Severity(SeverityLevel.MINOR)
     public void testOnlinePaymentBlockLogos() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open()
@@ -47,6 +62,9 @@ public class MtsOnlinePaymentTest extends BaseTest {
 
 
     @Test
+    @DisplayName("Проверка работы ссылки")
+    @Description("Проверяет, что ссылка \"Подробнее о сервисе\" видна и ведет на нужную страницу")
+    @Severity(SeverityLevel.MINOR)
     public void testOnlinePaymentBlockLink() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open()
@@ -65,6 +83,10 @@ public class MtsOnlinePaymentTest extends BaseTest {
 
 
     @Test
+    @DisplayName("Проверка плейсхолдеров")
+    @Description("Проверяет плейсхолдеры Номер телефона / Номер абонента / Номер счета на 44 / Номер счета на 2073 " +
+            ", Сумма, E-mail для отправки чека")
+    @Severity(SeverityLevel.NORMAL)
     public void testServiceOptionsPlaceholders() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open()
@@ -111,6 +133,11 @@ public class MtsOnlinePaymentTest extends BaseTest {
 
 
     @Test
+    @DisplayName("Проверка процесса перехода к оплате")
+    @Description("Проверяет, что заполнение данных для услуг связи, кнопку продолжить, открытие попап окна, " +
+            "плейсхолдеры, кнопку и логотипы внутри попап окна")
+    @Severity(SeverityLevel.CRITICAL)
+    @Tag("Смоук")
     public void testFullPaymentFlow() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open()
