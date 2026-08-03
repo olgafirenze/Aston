@@ -20,18 +20,6 @@ public class MtsOnlinePaymentTest extends BaseTest {
     private MainPage mainPage;
     private PaymentPopupPage popupPage;
 
-    @Step("Это простой тестовый шаг")
-    private void testStep() {
-        System.out.println("Шаг выполнен!");
-    }
-
-    @Test
-    public void testWithSimpleStep() {
-        testStep();
-        assertThat(true).isTrue();
-    }
-
-
     @Step("Открыть главную страницу и перейти к блоку оплаты")
     private void openMainPageAndScrollToPayment() {
         mainPage = new MainPage(driver);
