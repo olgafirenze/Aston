@@ -19,7 +19,7 @@ public class MtsOnlinePaymentTest extends BaseTest {
     private PaymentPopupPage popupPage;
 
     @Step("Открыть главную страницу и перейти к блоку оплаты")
-    private void openMainPageAndScrollToPayment() {
+    protected void openMainPageAndScrollToPayment() {
         mainPage = new MainPage(driver);
         mainPage.open()
                 .closeCookieBanner()
@@ -27,7 +27,7 @@ public class MtsOnlinePaymentTest extends BaseTest {
     }
 
     @Step("Проверить заголовок блока: ожидается '{expectedTitle}'")
-    private void verifyBlockTitle(String expectedTitle) {
+    protected void verifyBlockTitle(String expectedTitle) {
         String actualTitle = mainPage.getTitle().replace("\n", " ").replace("\"", "").trim();
         assertThat(actualTitle)
                 .as("Название блока должно соответствовать ожидаемому")
@@ -35,7 +35,7 @@ public class MtsOnlinePaymentTest extends BaseTest {
     }
 
     @Step("Проверить наличие логотипов платежных систем")
-    private void verifyLogos(String... expectedLogos) {
+    protected void verifyLogos(String... expectedLogos) {
         List<WebElement> logos = mainPage.getLogos();
         for (String logoName : expectedLogos) {
             boolean found = logos.stream()
@@ -47,7 +47,7 @@ public class MtsOnlinePaymentTest extends BaseTest {
     }
 
     @Step("Проверить ссылку 'Подробнее о сервисе'")
-    private void verifyServiceLink() {
+    protected void verifyServiceLink() {
         assertThat(mainPage.isLinkVisible())
                 .as("Ссылка 'Подробнее о сервисе' должна быть видима")
                 .isTrue();
@@ -58,7 +58,7 @@ public class MtsOnlinePaymentTest extends BaseTest {
     }
 
     @Step("Проверить плейсхолдеры для услуги '{service}'")
-    private void verifyPlaceholdersForService(String service) {
+    protected void verifyPlaceholdersForService(String service) {
         mainPage.selectServiceByValue(service);
 
         String phonePlaceholder = mainPage.getFieldPlaceholder("Номер телефона");
@@ -93,20 +93,20 @@ public class MtsOnlinePaymentTest extends BaseTest {
     }
 
     @Step("Заполнить данные для оплаты: телефон '{phone}', сумма '{amount}', email '{email}'")
-    private void fillPaymentData(String phone, String amount, String email) {
+    protected void fillPaymentData(String phone, String amount, String email) {
         mainPage.fillPhoneNumber(phone)
                 .fillAmount(amount)
                 .fillEmail(email);
     }
 
     @Step("Нажать кнопку 'Продолжить' и переключиться на попап-окно")
-    private void clickContinueAndSwitchToPopup() {
+    protected void clickContinueAndSwitchToPopup() {
         popupPage = mainPage.clickContinueButton();
         popupPage.switchToPopup();
     }
 
     @Step("Проверить попап-окно оплаты")
-    private void verifyPaymentPopup() {
+    protected void verifyPaymentPopup() {
         assertThat(popupPage.isPaymentPopupDisplayed())
                 .as("Окно оплаты должно отображаться")
                 .isTrue();
