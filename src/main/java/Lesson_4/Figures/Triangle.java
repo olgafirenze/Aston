@@ -38,7 +38,7 @@ public class Triangle extends Figure {
 
     @Override
     public double calcPerimeter() {
-        (getA() + getB() + getC());
+        return (getA() + getB() + getC());
     }
 
     @Override

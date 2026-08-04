@@ -2,13 +2,13 @@ package Lesson_4.Figures;
 
 
 public abstract class Figure implements Calculation {
-    private String lineColor;
-    private String innerColor;
-    private double a;
-    private double b;
-    private double c;
-    private double p;
-    private String figureType;
+    protected String lineColor;
+    protected String innerColor;
+    protected double a;
+    protected double b;
+    protected double c;
+    protected double p;
+    protected String figureType;
 
     public Figure(String lineColor, String innerColor) {
         this.lineColor = lineColor;

@@ -14,8 +14,23 @@ public class Circle extends Figure {
     }
 
     @Override
+    public double getB() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public double getC() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String getFigureType() {
         return this.figureType;
+    }
+
+    @Override
+    public double getP() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

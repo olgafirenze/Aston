@@ -3,7 +3,7 @@ package Lesson_4.Figures;
 public class Rectangle extends Figure {
 
     public Rectangle (String lineColor, String innerColor, double a, double b) {
-        super(lineColor, innerColor)
+        super(lineColor, innerColor);
         this.a = a;
         this.b = b;
         this.figureType = "rectangle";
@@ -20,8 +20,18 @@ public class Rectangle extends Figure {
     }
 
     @Override
+    public double getC() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String getFigureType() {
         return this.figureType;
+    }
+
+    @Override
+    public double getP() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
